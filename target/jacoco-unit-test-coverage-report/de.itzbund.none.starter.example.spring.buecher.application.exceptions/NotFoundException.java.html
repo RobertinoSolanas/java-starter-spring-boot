@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotFoundException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">spring</a> &gt; <a href="index.source.html" class="el_package">de.itzbund.none.starter.example.spring.buecher.application.exceptions</a> &gt; <span class="el_source">NotFoundException.java</span></div><h1>NotFoundException.java</h1><pre class="source lang-java linenums">package de.itzbund.none.starter.example.spring.buecher.application.exceptions;
+
+/**
+ * Exception, die geworfen wird, wenn eine angeforderte Entität nicht gefunden werden kann.
+ * 
+ * &lt;p&gt;Diese Exception wird typischerweise in Service-Schichten verwendet, wenn eine 
+ * Abfrage nach einer Entität mit einer bestimmten ID kein Ergebnis liefert.&lt;/p&gt;
+ * 
+ * &lt;p&gt;&lt;strong&gt;Anwendungsbeispiele:&lt;/strong&gt;&lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;Buch mit ID nicht in der Datenbank vorhanden&lt;/li&gt;
+ *   &lt;li&gt;Bestellung mit angegebener ID existiert nicht&lt;/li&gt;
+ *   &lt;li&gt;Referenzierte Entität wurde bereits gelöscht&lt;/li&gt;
+ * &lt;/ul&gt;
+ * 
+ * &lt;p&gt;Diese Exception führt zu einer HTTP 404 (Not Found) Antwort.&lt;/p&gt;
+ * 
+ * @see de.itzbund.none.starter.example.spring.buecher.adapters.primary.rest.exception.GlobalExceptionHandler#handleNotFoundException
+ */
+public class NotFoundException extends RuntimeException {
+
+    /** Die ID der nicht gefundenen Entität. */
+    private final Long entityId;
+
+    /**
+     * Erstellt eine neue NotFoundException für eine nicht gefundene Entität.
+     * 
+     * &lt;p&gt;Die Exception-Message wird automatisch im Format 
+     * &quot;Entity with ID {id} not found&quot; generiert.&lt;/p&gt;
+     *
+     * @param entityId die ID der nicht gefundenen Entität (darf nicht null sein)
+     * @throws IllegalArgumentException wenn entityId null ist
+     */
+    public NotFoundException(Long entityId) {
+<span class="fc" id="L35">        super(String.format(&quot;Entity with ID %d not found&quot;, entityId));</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (entityId == null) {</span>
+<span class="nc" id="L37">            throw new IllegalArgumentException(&quot;Entity ID darf nicht null sein&quot;);</span>
+        }
+<span class="fc" id="L39">        this.entityId = entityId;</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * Gibt die ID der nicht gefundenen Entität zurück.
+     * 
+     * @return die ID der nicht gefundenen Entität (niemals null)
+     */
+    public Long getEntityId() {
+<span class="nc" id="L48">        return entityId;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

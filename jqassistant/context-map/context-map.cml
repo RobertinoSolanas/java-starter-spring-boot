@@ -1,0 +1,18 @@
+ContextMap BuchShop {
+
+	contains Buecher
+	contains Bestellungen
+
+}
+
+BoundedContext Buecher implements Buecher
+BoundedContext Bestellungen implements Bestellungen
+
+Domain BuchShop {
+	Subdomain Buecher {
+		type = CORE_DOMAIN
+	}
+	Subdomain Bestellungen {
+		type = CORE_DOMAIN
+	}
+}

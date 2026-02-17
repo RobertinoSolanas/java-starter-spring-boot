@@ -1,0 +1,17 @@
+<jqassistant-rules xmlns="http://schema.jqassistant.org/rule/v2.2"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://schema.jqassistant.org/rule/v2.2 https://jqassistant.github.io/jqassistant/current/schema/jqassistant-rule-v2.2.xsd">
+
+    <concept id="preparation-default:AnalysisScope">
+        <description>Einführen eines Scoped-Labels für alle Maven-Module, die Teil der Analyse sind.</description>
+        <cypher><![CDATA[
+            MATCH
+                (mavenModule:Maven:Project:File:Directory)-[:CREATES]->(artifact:Maven:Artifact)
+            SET
+                mavenModule:Scoped
+            RETURN
+                mavenModule AS MavenModule
+        ]]></cypher>
+    </concept>
+
+</jqassistant-rules>

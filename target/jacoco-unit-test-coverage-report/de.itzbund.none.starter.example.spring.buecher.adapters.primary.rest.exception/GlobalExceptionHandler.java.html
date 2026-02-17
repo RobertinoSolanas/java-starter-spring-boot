@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">spring</a> &gt; <a href="index.source.html" class="el_package">de.itzbund.none.starter.example.spring.buecher.adapters.primary.rest.exception</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package de.itzbund.none.starter.example.spring.buecher.adapters.primary.rest.exception;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+import de.itzbund.none.starter.example.spring.buecher.application.exceptions.BusinessException;
+import de.itzbund.none.starter.example.spring.buecher.application.exceptions.NotFoundException;
+import de.itzbund.none.starter.example.spring.buecher.application.exceptions.UnauthorizedException;
+
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/**
+ * Globaler Exception-Handler für die Anwendung.
+ * Wandelt anwendungsdefinierte Ausnahmen in passende HTTP-Antworten um.
+ *
+ * Unterstützte Zuordnungen:
+ * - NotFoundException -&gt; 404 NOT_FOUND
+ * - BusinessException -&gt; 409 CONFLICT
+ * - UnauthorizedException -&gt; 403 FORBIDDEN
+ * - IllegalArgumentException -&gt; 400 BAD_REQUEST
+ * - Exception (generisch) -&gt; 500 INTERNAL_SERVER_ERROR
+ *
+ * Jede Antwort enthält allgemeine Metadaten wie Timestamp, Status, Error, Message und Path.
+ * Zusätzlich werden spezifische Felder der jeweiligen Ausnahme (z. B. entityId,
+ * businessRule, userId, operation) in die Antwort aufgenommen, falls vorhanden.
+ *
+ * Der Handler protokolliert alle Ausnahmen im Error-Log mit relevanten Details,
+ * damit Fehler im Betrieb nachvollzogen werden können.
+ */
+@ControllerAdvice
+<span class="nc" id="L39">public class GlobalExceptionHandler {</span>
+<span class="nc" id="L40">    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);</span>
+
+    /**
+     * Behandelt NotFoundException und liefert eine 404-Antwort.
+     * Die Antwort enthält: timestamp, status, error, message, entityId, path.
+     */
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleNotFoundException(
+            NotFoundException ex, WebRequest request) {
+
+<span class="nc" id="L50">        Map&lt;String, Object&gt; body = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L51">        body.put(&quot;timestamp&quot;, LocalDateTime.now());</span>
+<span class="nc" id="L52">        body.put(&quot;status&quot;, HttpStatus.NOT_FOUND.value());</span>
+<span class="nc" id="L53">        body.put(&quot;error&quot;, &quot;Entity Not Found&quot;);</span>
+<span class="nc" id="L54">        body.put(&quot;message&quot;, ex.getMessage());</span>
+<span class="nc" id="L55">        body.put(&quot;entityId&quot;, ex.getEntityId());</span>
+<span class="nc" id="L56">        body.put(&quot;path&quot;, request.getDescription(false).replace(&quot;uri=&quot;, &quot;&quot;));</span>
+
+<span class="nc" id="L58">        LOGGER.error(&quot;Entity Not Found: {}, Request Details: {}&quot;, ex.getMessage(), request.getDescription(false), ex);</span>
+<span class="nc" id="L59">        return new ResponseEntity&lt;&gt;(body, HttpStatus.NOT_FOUND);</span>
+    }
+
+    /**
+     * Behandelt BusinessException und liefert eine 409-Antwort.
+     * Die Antwort enthält: timestamp, status, error, message, businessRule,
+     * optional entityId und path.
+     */
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleBusinessException(
+            BusinessException ex, WebRequest request) {
+
+<span class="nc" id="L71">        Map&lt;String, Object&gt; body = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L72">        body.put(&quot;timestamp&quot;, LocalDateTime.now());</span>
+<span class="nc" id="L73">        body.put(&quot;status&quot;, HttpStatus.CONFLICT.value());</span>
+<span class="nc" id="L74">        body.put(&quot;error&quot;, &quot;Business Rule Violation&quot;);</span>
+<span class="nc" id="L75">        body.put(&quot;message&quot;, ex.getMessage());</span>
+<span class="nc" id="L76">        body.put(&quot;businessRule&quot;, ex.getBusinessRule());</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (ex.getEntityId() != null) {</span>
+<span class="nc" id="L78">            body.put(&quot;entityId&quot;, ex.getEntityId());</span>
+        }
+<span class="nc" id="L80">        body.put(&quot;path&quot;, request.getDescription(false).replace(&quot;uri=&quot;, &quot;&quot;));</span>
+
+<span class="nc" id="L82">        LOGGER.error(&quot;Business Rule Violation: {}, Request Details: {}&quot;, ex.getBusinessRule(),</span>
+<span class="nc" id="L83">                request.getDescription(false), ex);</span>
+<span class="nc" id="L84">        return new ResponseEntity&lt;&gt;(body, HttpStatus.CONFLICT);</span>
+    }
+
+    /**
+     * Behandelt UnauthorizedException und liefert eine 403-Antwort.
+     * Die Antwort enthält: timestamp, status, error, message, entityId, userId,
+     * operation und path.
+     */
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleUnauthorizedException(
+            UnauthorizedException ex, WebRequest request) {
+
+<span class="nc" id="L96">        Map&lt;String, Object&gt; body = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L97">        body.put(&quot;timestamp&quot;, LocalDateTime.now());</span>
+<span class="nc" id="L98">        body.put(&quot;status&quot;, HttpStatus.FORBIDDEN.value());</span>
+<span class="nc" id="L99">        body.put(&quot;error&quot;, &quot;Unauthorized Operation&quot;);</span>
+<span class="nc" id="L100">        body.put(&quot;message&quot;, ex.getMessage());</span>
+<span class="nc" id="L101">        body.put(&quot;entityId&quot;, ex.getEntityId());</span>
+<span class="nc" id="L102">        body.put(&quot;userId&quot;, ex.getUserId());</span>
+<span class="nc" id="L103">        body.put(&quot;operation&quot;, ex.getOperation());</span>
+<span class="nc" id="L104">        body.put(&quot;path&quot;, request.getDescription(false).replace(&quot;uri=&quot;, &quot;&quot;));</span>
+
+<span class="nc" id="L106">        LOGGER.error(&quot;Unauthorized operation: {}, Request Details: {}&quot;, ex.getOperation(),</span>
+<span class="nc" id="L107">                request.getDescription(false), ex);</span>
+<span class="nc" id="L108">        return new ResponseEntity&lt;&gt;(body, HttpStatus.FORBIDDEN);</span>
+    }
+
+    /**
+     * Allgemeiner Fallback für nicht explizit behandelte Ausnahmen.
+     * Liefert eine 500-Antwort (Internal Server Error) und protokolliert die Ausnahme.
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleGenericException(
+            Exception ex, WebRequest request) {
+
+<span class="nc" id="L119">        Map&lt;String, Object&gt; body = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L120">        body.put(&quot;timestamp&quot;, LocalDateTime.now());</span>
+<span class="nc" id="L121">        body.put(&quot;status&quot;, HttpStatus.INTERNAL_SERVER_ERROR.value());</span>
+<span class="nc" id="L122">        body.put(&quot;error&quot;, &quot;Internal Server Error&quot;);</span>
+<span class="nc" id="L123">        body.put(&quot;message&quot;, &quot;An unexpected error occurred&quot;);</span>
+<span class="nc" id="L124">        body.put(&quot;path&quot;, request.getDescription(false).replace(&quot;uri=&quot;, &quot;&quot;));</span>
+
+<span class="nc" id="L126">        LOGGER.error(&quot;Exception occurred: {}, Request Details: {}&quot;, ex.getMessage(), request.getDescription(false), ex);</span>
+<span class="nc" id="L127">        return new ResponseEntity&lt;&gt;(body, HttpStatus.INTERNAL_SERVER_ERROR);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

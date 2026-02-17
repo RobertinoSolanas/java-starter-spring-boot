@@ -1,0 +1,9 @@
+ifndef::imagesdir[:imagesdir: ../images]
+
+[[management-summary]]
+==	Management Summary
+Dieses Dokument beschreibt die Architektur des Verfahrens <XY> und wird vom Referat <XY> fortgeschrieben. Die Struktur dieses Dokuments basiert auf dem Template von Arch42 (https://arc42.org), welches von Dr. Peter Hruschka und Dr. Gernot Starke erstellt und vom ITZBund insbesondere an die internen Termini angepasst wurde.
+
+Nachdem Kapitel 1 mit der Aufgabenstellung, den wichtigsten Qualitätsanforderungen und der Auflistung der Stakeholder einen Überblick ermöglicht, wird anschließend das System, beginnend von einem abstrakten Niveau, schrittweise verfeinert. Lösungsstrategien und Architekturentscheidungen werden unter Berücksichtigung von Alternativen beleuchtet. Das Dokument endet mit den Risiken und technischen Schulden, die sich aus den Architekturentscheidungen ergeben.
+
+Dieses Dokument bildet die Planungsgrundlage für die Entwicklung des IT-Systems und wird während des gesamten Lebenszyklus fortgeschrieben.

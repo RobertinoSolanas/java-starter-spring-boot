@@ -1,0 +1,17 @@
+ifndef::imagesdir[:imagesdir: ../images]
+
+[[general-information]]
+==	Allgemeine Informationen
+
+
+=== Informationen
+
+[cols="h,1"]
+|===
+| Ablage | <Ablageort>
+| Aktenzeichen / AKZ   |
+| Veröffentlichungsform | <Intranet, SharePoint, etc>
+| Review-Zyklus   | <halbjährlich, jährlich, zweijährlich, etc>
+| Kontakt | <Gruppenpostfach>@itzbund.de
+|Organisationseinheit | <federführendes Referat>
+|===

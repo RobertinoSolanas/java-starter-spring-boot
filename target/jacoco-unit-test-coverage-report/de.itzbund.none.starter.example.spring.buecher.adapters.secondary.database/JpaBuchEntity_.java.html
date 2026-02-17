@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JpaBuchEntity_.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">spring</a> &gt; <a href="index.source.html" class="el_package">de.itzbund.none.starter.example.spring.buecher.adapters.secondary.database</a> &gt; <span class="el_source">JpaBuchEntity_.java</span></div><h1>JpaBuchEntity_.java</h1><pre class="source lang-java linenums">package de.itzbund.none.starter.example.spring.buecher.adapters.secondary.database;
+
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.StaticMetamodel;
+
+@StaticMetamodel(JpaBuchEntity.class)
+<span class="nc" id="L8">public abstract class JpaBuchEntity_ {</span>
+
+	public static final String AUSGELIEHEN = &quot;ausgeliehen&quot;;
+	public static final String TITEL = &quot;titel&quot;;
+	public static final String ISBN = &quot;isbn&quot;;
+	public static final String ID = &quot;id&quot;;
+	public static final String AUTOR = &quot;autor&quot;;
+	public static final String AUSGELIEHEN_VON = &quot;ausgeliehenVon&quot;;
+
+	
+	/**
+	 * @see de.itzbund.none.starter.example.spring.buecher.adapters.secondary.database.JpaBuchEntity#ausgeliehen
+	 **/
+	public static volatile SingularAttribute&lt;JpaBuchEntity, Boolean&gt; ausgeliehen;
+	
+	/**
+	 * @see de.itzbund.none.starter.example.spring.buecher.adapters.secondary.database.JpaBuchEntity#titel
+	 **/
+	public static volatile SingularAttribute&lt;JpaBuchEntity, String&gt; titel;
+	
+	/**
+	 * @see de.itzbund.none.starter.example.spring.buecher.adapters.secondary.database.JpaBuchEntity#isbn
+	 **/
+	public static volatile SingularAttribute&lt;JpaBuchEntity, String&gt; isbn;
+	
+	/**
+	 * @see de.itzbund.none.starter.example.spring.buecher.adapters.secondary.database.JpaBuchEntity#id
+	 **/
+	public static volatile SingularAttribute&lt;JpaBuchEntity, Long&gt; id;
+	
+	/**
+	 * @see de.itzbund.none.starter.example.spring.buecher.adapters.secondary.database.JpaBuchEntity
+	 **/
+	public static volatile EntityType&lt;JpaBuchEntity&gt; class_;
+	
+	/**
+	 * @see de.itzbund.none.starter.example.spring.buecher.adapters.secondary.database.JpaBuchEntity#autor
+	 **/
+	public static volatile SingularAttribute&lt;JpaBuchEntity, String&gt; autor;
+	
+	/**
+	 * @see de.itzbund.none.starter.example.spring.buecher.adapters.secondary.database.JpaBuchEntity#ausgeliehenVon
+	 **/
+	public static volatile SingularAttribute&lt;JpaBuchEntity, Long&gt; ausgeliehenVon;
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

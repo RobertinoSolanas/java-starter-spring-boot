@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InMemoryBestellungRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">spring</a> &gt; <a href="index.source.html" class="el_package">de.itzbund.none.starter.example.spring.bestellungen.adapters.secondary.local</a> &gt; <span class="el_source">InMemoryBestellungRepository.java</span></div><h1>InMemoryBestellungRepository.java</h1><pre class="source lang-java linenums">package de.itzbund.none.starter.example.spring.bestellungen.adapters.secondary.local;
+
+import de.itzbund.none.starter.example.spring.bestellungen.application.domain.Bestellung;
+import de.itzbund.none.starter.example.spring.bestellungen.application.ports.secondary.BestellungRepository;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * In-Memory Repository für Bestellung Objekte
+ */
+@Repository
+@Profile(&quot;in-memory&quot;)
+public class InMemoryBestellungRepository implements BestellungRepository {
+<span class="nc" id="L19">    private final List&lt;Bestellung&gt; bestellungen = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * InMemoryBestellungRepository Konstruktor
+     */
+    public InMemoryBestellungRepository() {
+<span class="nc" id="L25">        super();</span>
+
+<span class="nc" id="L27">        bestellungen.add(new Bestellung(1L, 1L, 2, BigDecimal.valueOf(20.0), &quot;Test Bestellung 1&quot;));</span>
+<span class="nc" id="L28">        bestellungen.add(new Bestellung(2L, 2L, 1, BigDecimal.valueOf(10.0), &quot;Test Bestellung 2&quot;));</span>
+<span class="nc" id="L29">        bestellungen.add(new Bestellung(3L, 3L, 5, BigDecimal.valueOf(50.0), &quot;Test Bestellung 3&quot;));</span>
+<span class="nc" id="L30">    }</span>
+
+    @Override
+    public synchronized Bestellung save(Bestellung bestellung) {
+<span class="nc" id="L34">        bestellungen.add(bestellung);</span>
+<span class="nc" id="L35">        return bestellung;</span>
+    }
+
+    @Override
+    public synchronized List&lt;Bestellung&gt; findAll() {
+<span class="nc" id="L40">        return Collections.unmodifiableList(bestellungen);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

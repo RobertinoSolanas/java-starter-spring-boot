@@ -1,0 +1,16 @@
+ifndef::imagesdir[:imagesdir: ../images]
+
+[[document-information]]
+==	Informationen zum vorliegenden Dokument
+
+
+=== Informationen
+
+[cols="h,1"]
+|===
+| Projekt / Auftrag |
+| Version   | 0.0.0
+| Datum | xx.xx.20xx
+| QS geprüft am   | xx.xx.20xx
+| freigegeben am | xx.xx.20xx
+|===
