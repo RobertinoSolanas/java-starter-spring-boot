@@ -156,3 +156,6 @@ Bei Fragen, Feedback oder Vorschlägen:
 
 🧩 **Hinweis zu Docker:**
 Ein `Dockerfile` ist aktuell **nicht enthalten**. Die Containerisierung ist in Planung und wird in Abstimmung mit den beteiligten Teams erarbeitet. Bei Bedarf bitte Rücksprache mit den DevOps- oder Architekturverantwortlichen halten.
+
+
+# /ask create a simple gui only using html css javascript for all provided service operations it is included in the service and starts with the service 
