@@ -16,4 +16,7 @@ spring:
 server:
   port: 9080
   servlet:
-    context-path: /api/v1
+    # The context‑path caused the front‑end to request URLs like /api/v1/api/..., which resulted in 404.
+    # Removing it (or setting it to "/") makes the API available directly under /api/ as the UI expects.
+    # Uncomment the line below to restore a versioned prefix, but then you must also update the front‑end URLs.
+    # context-path: /api/v1
