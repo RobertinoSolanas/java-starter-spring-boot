@@ -31,9 +31,15 @@ public class BuchService implements BuchUseCases, BuchQueries {
     }
 
     @Override
-    public Buch addBuch(AddBuchCommand command) {
-        Buch buch = new Buch(null, command.titel(), command.autor(), command.isbn(), false, Optional.empty());
-        return buchRepository.save(buch);
+    public Buch addBuch(Buch buch) {
+        // Ensure ID is null for new book
+        // But Buch is immutable-ish (except setters now).
+        // We can create a new one or just save it if ID is null.
+        // The repository might generate ID.
+        // Let's ensure new state.
+        Buch newBuch = new Buch(null, buch.getTitel(), buch.getAutor(), buch.getIsbn(), buch.getJahr(), false,
+                Optional.empty());
+        return buchRepository.save(newBuch);
     }
 
     @Override
@@ -71,6 +77,11 @@ public class BuchService implements BuchUseCases, BuchQueries {
     }
 
     @Override
+    public List<Buch> getAllBuecher() {
+        return buchRepository.findAll();
+    }
+
+    @Override
     public void removeBuch(Long buchId) {
         Buch buch = buchRepository.findById(buchId)
                 .orElseThrow(() -> new NotFoundException(buchId));
@@ -89,24 +100,36 @@ public class BuchService implements BuchUseCases, BuchQueries {
     }
 
     @Override
-    public Buch patchBuch(PatchBuchCommand command) {
-        Buch buch = buchRepository.findById(command.id())
-                .orElseThrow(() -> new NotFoundException(command.id()));
+    public Buch patchBuch(Long id, Buch updateInfo) {
+        Buch buch = buchRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(id));
 
-        command.titel().ifPresent(t -> buch.setTitel(t));
-        command.autor().ifPresent(a -> buch.setAutor(a));
-        command.isbn().ifPresent(i -> buch.setIsbn(i));
+        if (updateInfo.getTitel() != null)
+            buch.setTitel(updateInfo.getTitel());
+        if (updateInfo.getAutor() != null)
+            buch.setAutor(updateInfo.getAutor());
+        if (updateInfo.getIsbn() != null)
+            buch.setIsbn(updateInfo.getIsbn());
+        // For int jahr, we can't easily check 'null' unless we use Integer or a
+        // specific flag.
+        // Assuming 0 means "not set" or "don't update" if it's a primitive.
+        // But if the user wants to set year 0, that's an issue.
+        // For now, let's assume we update year if it's > 0.
+        if (updateInfo.getJahr() > 0)
+            buch.setJahr(updateInfo.getJahr());
+
         return buchRepository.save(buch);
     }
 
     @Override
-    public Buch updateBuch(UpdateBuchCommand command) {
-        Buch buch = buchRepository.findById(command.id())
-                .orElseThrow(() -> new NotFoundException(command.id()));
+    public Buch updateBuch(Long id, Buch updateInfo) {
+        Buch buch = buchRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(id));
 
-        buch.setTitel(command.titel());
-        buch.setAutor(command.autor());
-        buch.setIsbn(command.isbn());
+        buch.setTitel(updateInfo.getTitel());
+        buch.setAutor(updateInfo.getAutor());
+        buch.setIsbn(updateInfo.getIsbn());
+        buch.setJahr(updateInfo.getJahr());
         return buchRepository.save(buch);
     }
 }

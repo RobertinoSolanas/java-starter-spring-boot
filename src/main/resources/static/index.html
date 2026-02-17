@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Java Starter – Verwaltungs-GUI für Bücher und Bestellungen" />
+  <title>Java Starter – Verwaltung</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ───── Header ───── -->
+  <header class="app-header">
+    <div class="header-inner">
+      <h1 class="logo">📚 Java Starter</h1>
+      <nav class="tab-bar" role="tablist">
+        <button class="tab active" data-tab="buecher" role="tab" aria-selected="true" id="tab-buecher">Bücher</button>
+        <button class="tab" data-tab="bestellungen" role="tab" aria-selected="false"
+          id="tab-bestellungen">Bestellungen</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ───── Toast container ───── -->
+  <div id="toast-container"></div>
+
+  <!-- ═══════════════════ BÜCHER TAB ═══════════════════ -->
+  <main>
+    <section id="panel-buecher" class="panel active" role="tabpanel" aria-labelledby="tab-buecher">
+
+      <!-- Create form -->
+      <div class="card form-card">
+        <h2>Neues Buch anlegen</h2>
+        <form id="form-buch" autocomplete="off">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="buch-titel">Titel</label>
+              <input id="buch-titel" type="text" placeholder="z. B. Clean Code" required />
+            </div>
+            <div class="form-group">
+              <label for="buch-autor">Autor</label>
+              <input id="buch-autor" type="text" placeholder="z. B. Robert C. Martin" required />
+            </div>
+            <div class="form-group">
+              <label for="buch-isbn">ISBN</label>
+              <input id="buch-isbn" type="text" placeholder="z. B. 978-0132350884" required />
+            </div>
+            <div class="form-group">
+              <label for="buch-jahr">Jahr</label>
+              <input id="buch-jahr" type="number" placeholder="z. B. 2008" required />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Buch anlegen</button>
+        </form>
+      </div>
+
+      <!-- Data table -->
+      <div class="card table-card">
+        <h2>Alle Bücher</h2>
+        <div class="table-wrap">
+          <table id="buecher-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Titel</th>
+                <th>Autor</th>
+                <th>ISBN</th>
+                <th>Jahr</th>
+                <th class="col-actions">Aktionen</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p id="buecher-empty" class="empty-msg" hidden>Keine Bücher vorhanden.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ BESTELLUNGEN TAB ═══════════════════ -->
+    <section id="panel-bestellungen" class="panel" role="tabpanel" aria-labelledby="tab-bestellungen" hidden>
+
+      <!-- Create form -->
+      <div class="card form-card">
+        <h2>Neue Bestellung anlegen</h2>
+        <form id="form-bestellung" autocomplete="off">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="best-produktId">Produkt-ID</label>
+              <input id="best-produktId" type="number" min="1" placeholder="z. B. 42" required />
+            </div>
+            <div class="form-group">
+              <label for="best-menge">Menge</label>
+              <input id="best-menge" type="number" min="1" placeholder="z. B. 3" required />
+            </div>
+            <div class="form-group">
+              <label for="best-preis">Preis (€)</label>
+              <input id="best-preis" type="number" min="0" step="0.01" placeholder="z. B. 29.99" required />
+            </div>
+            <div class="form-group">
+              <label for="best-beschreibung">Beschreibung</label>
+              <input id="best-beschreibung" type="text" placeholder="z. B. Expresslieferung" required />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Bestellung anlegen</button>
+        </form>
+      </div>
+
+      <!-- Data table -->
+      <div class="card table-card">
+        <h2>Alle Bestellungen</h2>
+        <div class="table-wrap">
+          <table id="bestellungen-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Produkt-ID</th>
+                <th>Menge</th>
+                <th>Preis (€)</th>
+                <th>Beschreibung</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p id="bestellungen-empty" class="empty-msg" hidden>Keine Bestellungen vorhanden.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

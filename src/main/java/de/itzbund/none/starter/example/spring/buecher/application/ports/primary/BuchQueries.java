@@ -25,4 +25,9 @@ public interface BuchQueries {
      * Gibt eine Liste aller ausgeliehenen Bücher zurück.
      */
     List<Buch> getAusgelieheneBuecher();
+
+    /**
+     * Gibt eine Liste aller Bücher zurück.
+     */
+    List<Buch> getAllBuecher();
 }

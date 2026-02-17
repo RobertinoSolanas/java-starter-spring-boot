@@ -11,27 +11,9 @@ import java.util.Optional;
 @PrimaryPort
 public interface BuchUseCases {
     /**
-     * Command für das Hinzufügen eines neuen Buchs
-     */
-    record AddBuchCommand(String titel, String autor, String isbn) {
-    }
-
-    /**
-     * Command für das Aktualisieren einzelne Felder eines Buchs
-     */
-    record PatchBuchCommand(Long id, Optional<String> titel, Optional<String> autor, Optional<String> isbn) {
-    }
-
-    /**
-     * Command für das vollständige Ersetzen eines Buchs
-     */
-    record UpdateBuchCommand(Long id, String titel, String autor, String isbn) {
-    }
-
-    /**
      * Neues Buch hinzufügen
      */
-    Buch addBuch(AddBuchCommand command);
+    Buch addBuch(Buch buch);
 
     /**
      * Buch mit geg. ID wird von User mit bestimmter ID ausgeliehen
@@ -41,7 +23,7 @@ public interface BuchUseCases {
     /**
      * Aktualisiert einzelne Felder eines Buches
      */
-    Buch patchBuch(PatchBuchCommand command);
+    Buch patchBuch(Long id, Buch buch);
 
     /**
      * Löscht ein Buch anhand seiner ID
@@ -56,6 +38,6 @@ public interface BuchUseCases {
     /**
      * Ersetzt ein bestehendes Buch vollständig
      */
-    Buch updateBuch(UpdateBuchCommand command);
+    Buch updateBuch(Long id, Buch buch);
 
 }

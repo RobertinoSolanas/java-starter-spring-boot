@@ -4,9 +4,6 @@ import de.itzbund.none.starter.example.spring.buecher.application.domain.Buch;
 import de.itzbund.none.starter.example.spring.buecher.application.exceptions.BusinessException;
 import de.itzbund.none.starter.example.spring.buecher.application.exceptions.NotFoundException;
 import de.itzbund.none.starter.example.spring.buecher.application.exceptions.UnauthorizedException;
-import de.itzbund.none.starter.example.spring.buecher.application.ports.primary.BuchUseCases;
-import de.itzbund.none.starter.example.spring.buecher.application.ports.primary.BuchUseCases.AddBuchCommand;
-import de.itzbund.none.starter.example.spring.buecher.application.ports.primary.BuchUseCases.UpdateBuchCommand;
 import de.itzbund.none.starter.example.spring.buecher.application.ports.secondary.BuchRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,13 +48,14 @@ class BuchServiceTest {
         String titel = "Clean Code";
         String autor = "Robert C. Martin";
         String isbn = "9780132350884";
-        AddBuchCommand command = new AddBuchCommand(titel, autor, isbn);
+        int jahr = 2008;
+        Buch newBuch = new Buch(null, titel, autor, isbn, jahr, false, Optional.empty());
 
-        Buch savedBuch = new Buch(1L, titel, autor, isbn, false, Optional.empty());
+        Buch savedBuch = new Buch(1L, titel, autor, isbn, jahr, false, Optional.empty());
         when(buchRepository.save(any(Buch.class))).thenReturn(savedBuch);
 
         // When
-        Buch result = buchService.addBuch(command);
+        Buch result = buchService.addBuch(newBuch);
 
         // Then
         assertNotNull(result);
@@ -65,6 +63,7 @@ class BuchServiceTest {
         assertEquals(titel, result.getTitel());
         assertEquals(autor, result.getAutor());
         assertEquals(isbn, result.getIsbn());
+        assertEquals(jahr, result.getJahr());
 
         ArgumentCaptor<Buch> buchCaptor = ArgumentCaptor.forClass(Buch.class);
         verify(buchRepository).save(buchCaptor.capture());
@@ -74,6 +73,7 @@ class BuchServiceTest {
         assertEquals(titel, capturedBuch.getTitel());
         assertEquals(autor, capturedBuch.getAutor());
         assertEquals(isbn, capturedBuch.getIsbn());
+        assertEquals(jahr, capturedBuch.getJahr());
         assertFalse(capturedBuch.isAusgeliehen());
         assertTrue(capturedBuch.getAusgeliehenVon().isEmpty());
     }
@@ -83,7 +83,7 @@ class BuchServiceTest {
         // Given
         Long buchId = 1L;
         Long userId = 100L;
-        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884", false, Optional.empty());
+        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884", 2008, false, Optional.empty());
 
         when(buchRepository.findById(buchId)).thenReturn(Optional.of(buch));
         when(buchRepository.save(any(Buch.class))).thenReturn(buch);
@@ -105,7 +105,7 @@ class BuchServiceTest {
         // Given
         Long buchId = 1L;
         Long userId = 100L;
-        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884",
+        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884", 2008,
                 true, Optional.of(200L));
 
         when(buchRepository.findById(buchId)).thenReturn(Optional.of(buch));
@@ -122,7 +122,7 @@ class BuchServiceTest {
         // Given
         Long buchId = 1L;
         Long userId = 100L;
-        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884",
+        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884", 2008,
                 true, Optional.of(userId));
 
         when(buchRepository.findById(buchId)).thenReturn(Optional.of(buch));
@@ -146,7 +146,7 @@ class BuchServiceTest {
         Long buchId = 1L;
         Long buchAusgeliehenVonUserId = 200L;
         Long attemptingUserId = 100L;
-        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884",
+        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884", 2008,
                 true, Optional.of(buchAusgeliehenVonUserId));
 
         when(buchRepository.findById(buchId)).thenReturn(Optional.of(buch));
@@ -162,8 +162,8 @@ class BuchServiceTest {
     void getVerfuegbareBuecher() {
         // Given
         List<Buch> verfuegbareBuecher = Arrays.asList(
-                new Buch(1L, "Clean Code", "Robert C. Martin", "9780132350884", false, Optional.empty()),
-                new Buch(2L, "Clean Architecture", "Robert C. Martin", "9780134494166", false, Optional.empty()));
+                new Buch(1L, "Clean Code", "Robert C. Martin", "9780132350884", 2008, false, Optional.empty()),
+                new Buch(2L, "Clean Architecture", "Robert C. Martin", "9780134494166", 2017, false, Optional.empty()));
 
         when(buchRepository.findAllVerfuegbar()).thenReturn(verfuegbareBuecher);
 
@@ -179,8 +179,8 @@ class BuchServiceTest {
     void getAusgelieheneBuecher() {
         // Given
         List<Buch> ausgelieheneBuecher = Arrays.asList(
-                new Buch(1L, "Clean Code", "Robert C. Martin", "9780132350884", true, Optional.of(100L)),
-                new Buch(2L, "Clean Architecture", "Robert C. Martin", "9780134494166", true, Optional.of(200L)));
+                new Buch(1L, "Clean Code", "Robert C. Martin", "9780132350884", 2008, true, Optional.of(100L)),
+                new Buch(2L, "Clean Architecture", "Robert C. Martin", "9780134494166", 2017, true, Optional.of(200L)));
 
         when(buchRepository.findAllAusgeliehen()).thenReturn(ausgelieheneBuecher);
 
@@ -198,7 +198,7 @@ class BuchServiceTest {
     void removeBuch_whenVerfuegbar() {
         // Given
         Long buchId = 1L;
-        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884", false, Optional.empty());
+        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884", 2008, false, Optional.empty());
 
         when(buchRepository.findById(buchId)).thenReturn(Optional.of(buch));
 
@@ -213,7 +213,7 @@ class BuchServiceTest {
     void removeBuch_whenAusgeliehen() {
         // Given
         Long buchId = 1L;
-        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884",
+        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884", 2008,
                 true, Optional.of(100L));
 
         when(buchRepository.findById(buchId)).thenReturn(Optional.of(buch));
@@ -228,7 +228,7 @@ class BuchServiceTest {
     void getBuchById() {
         // Given
         Long buchId = 1L;
-        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884", false, Optional.empty());
+        Buch buch = new Buch(buchId, "Clean Code", "Robert C. Martin", "9780132350884", 2008, false, Optional.empty());
 
         when(buchRepository.findById(buchId)).thenReturn(Optional.of(buch));
 
@@ -259,20 +259,23 @@ class BuchServiceTest {
         String originalTitel = "Clean Code";
         String originalAutor = "Robert C. Martin";
         String originalIsbn = "9780132350884";
+        int originalJahr = 2008;
 
         String newTitel = "Clean Code: A Handbook of Agile Software Craftsmanship";
 
-        Buch existingBuch = new Buch(buchId, originalTitel, originalAutor, originalIsbn, false, Optional.empty());
-        Buch updatedBuch = new Buch(buchId, newTitel, originalAutor, originalIsbn, false, Optional.empty());
+        Buch existingBuch = new Buch(buchId, originalTitel, originalAutor, originalIsbn, originalJahr, false,
+                Optional.empty());
+        Buch updatedBuch = new Buch(buchId, newTitel, originalAutor, originalIsbn, originalJahr, false,
+                Optional.empty());
 
-        BuchUseCases.PatchBuchCommand command = new BuchUseCases.PatchBuchCommand(buchId, Optional.of(newTitel),
-                Optional.empty(), Optional.empty());
+        // Create partial update object (only title set)
+        Buch patchInfo = new Buch(null, newTitel, null, null, 0, false, Optional.empty());
 
         when(buchRepository.findById(buchId)).thenReturn(Optional.of(existingBuch));
         when(buchRepository.save(any(Buch.class))).thenReturn(updatedBuch);
 
         // When
-        Buch result = buchService.patchBuch(command);
+        Buch result = buchService.patchBuch(buchId, patchInfo);
 
         // Then
         assertNotNull(result);
@@ -296,27 +299,31 @@ class BuchServiceTest {
         String originalTitel = "Clean Code";
         String originalAutor = "Robert C. Martin";
         String originalIsbn = "9780132350884";
+        int originalJahr = 2008;
 
         String newTitel = "Clean Code: A Handbook";
         String newAutor = "Robert Cecil Martin";
         String newIsbn = "9780132350885";
+        int newJahr = 2009;
 
-        Buch existingBuch = new Buch(buchId, originalTitel, originalAutor, originalIsbn, false, Optional.empty());
-        Buch updatedBuch = new Buch(buchId, newTitel, newAutor, newIsbn, false, Optional.empty());
+        Buch existingBuch = new Buch(buchId, originalTitel, originalAutor, originalIsbn, originalJahr, false,
+                Optional.empty());
+        Buch updatedBuch = new Buch(buchId, newTitel, newAutor, newIsbn, newJahr, false, Optional.empty());
 
-        BuchUseCases.UpdateBuchCommand command = new UpdateBuchCommand(buchId, newTitel, newAutor, newIsbn);
+        Buch updateInfo = new Buch(null, newTitel, newAutor, newIsbn, newJahr, false, Optional.empty());
 
         when(buchRepository.findById(buchId)).thenReturn(Optional.of(existingBuch));
         when(buchRepository.save(any(Buch.class))).thenReturn(updatedBuch);
 
         // When
-        Buch result = buchService.updateBuch(command);
+        Buch result = buchService.updateBuch(buchId, updateInfo);
 
         // Then
         assertNotNull(result);
         assertEquals(newTitel, result.getTitel());
         assertEquals(newAutor, result.getAutor());
         assertEquals(newIsbn, result.getIsbn());
+        assertEquals(newJahr, result.getJahr());
 
         ArgumentCaptor<Buch> buchCaptor = ArgumentCaptor.forClass(Buch.class);
         verify(buchRepository).save(buchCaptor.capture());
@@ -325,5 +332,6 @@ class BuchServiceTest {
         assertEquals(newTitel, capturedBuch.getTitel());
         assertEquals(newAutor, capturedBuch.getAutor());
         assertEquals(newIsbn, capturedBuch.getIsbn());
+        assertEquals(newJahr, capturedBuch.getJahr());
     }
 }

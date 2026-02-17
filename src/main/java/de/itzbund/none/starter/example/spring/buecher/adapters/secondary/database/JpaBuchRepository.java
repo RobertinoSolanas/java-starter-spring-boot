@@ -60,4 +60,11 @@ public class JpaBuchRepository implements BuchRepository {
                 .map(buchMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Buch> findAll() {
+        return jpaRepository.findAll().stream()
+                .map(buchMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }

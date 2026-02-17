@@ -36,4 +36,9 @@ public interface BuchRepository {
      * Gibt alle ausgeliehenen Bücher zurück.
      */
     List<Buch> findAllAusgeliehen();
+
+    /**
+     * Gibt alle Bücher zurück.
+     */
+    List<Buch> findAll();
 }
