@@ -1,0 +1,90 @@
+/* -------------------------------------------------
+   Simple, clean styling – no external libraries needed
+   ------------------------------------------------- */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 2rem;
+    background: #f9f9f9;
+    color: #333;
+}
+
+h1, h2, h3 {
+    color: #2c3e50;
+}
+
+section {
+    margin-bottom: 2rem;
+}
+
+/* ---- Forms --------------------------------------------------- */
+form fieldset {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    background: #fff;
+    max-width: 500px;
+}
+form label {
+    display: block;
+    margin-top: 0.5rem;
+}
+form input {
+    width: 100%;
+    padding: 0.4rem;
+    margin-top: 0.2rem;
+    box-sizing: border-box;
+}
+form button {
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+form button:hover {
+    background: #219150;
+}
+
+/* ---- Tables -------------------------------------------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+    background: #fff;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 0.6rem;
+    text-align: left;
+}
+th {
+    background: #ecf0f1;
+}
+tr:nth-child(even) {
+    background: #fafafa;
+}
+
+/* ---- Buttons inside tables ----------------------------------- */
+.action-btn {
+    padding: 0.3rem 0.6rem;
+    margin-right: 0.3rem;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.delete-btn   { background: #c0392b; color: #fff; }
+.borrow-btn   { background: #2980b9; color: #fff; }
+.return-btn   { background: #8e44ad; color: #fff; }
+
+.action-btn:hover {
+    opacity: 0.85;
+}
+
+/* ---- Layout for the two book tables -------------------------- */
+.book-lists {
+    display: flex;
+    gap: 2rem;
+}
+.book-list {
+    flex: 1;
+}
