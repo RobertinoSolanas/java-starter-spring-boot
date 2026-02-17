@@ -14,7 +14,9 @@ import java.util.List;
  * In-Memory Repository für Bestellung Objekte
  */
 @Repository
-@Profile("in-memory")
+// The repository should be available in the default profile so that the application can start
+// without requiring a specific Spring profile. Removing the @Profile annotation makes this
+// implementation the default bean for BestellungRepository.
 public class InMemoryBestellungRepository implements BestellungRepository {
     private final List<Bestellung> bestellungen = new ArrayList<>();
 
