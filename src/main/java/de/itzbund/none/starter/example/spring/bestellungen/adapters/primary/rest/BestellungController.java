@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * Primärer REST-Adapter für Bestellungen
  */
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/api/bestellungen")   // <-- updated to match the UI URLs
 public class BestellungController {
 
     private final BestellungService bestellungService;
@@ -44,7 +44,7 @@ public class BestellungController {
                 request.getBeschreibung()
         );
         return new BestellungResponse(
-            created.getId(),
+                created.getId(),
                 created.getProduktId(),
                 created.getMenge(),
                 created.getPreis(),
@@ -60,7 +60,7 @@ public class BestellungController {
         List<Bestellung> bestellungen = bestellungService.getAllBestellungen();
         return bestellungen.stream()
                 .map(o -> new BestellungResponse(
-                    o.getId(),
+                        o.getId(),
                         o.getProduktId(),
                         o.getMenge(),
                         o.getPreis(),

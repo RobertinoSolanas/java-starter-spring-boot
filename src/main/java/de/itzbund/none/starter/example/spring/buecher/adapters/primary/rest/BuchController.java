@@ -10,6 +10,7 @@ import de.itzbund.none.starter.example.spring.buecher.application.ports.primary.
 import de.itzbund.none.starter.example.spring.buecher.application.ports.primary.BuchUseCases;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,8 +24,13 @@ import java.util.stream.Collectors;
  * Annotation verwendet – ein doppeltes Präfix (z. B. {@code /api/v1/buecher/buecher})
  * würde zu falschen URLs führen und Spring würde die Anfrage fälschlicherweise
  * als Aufruf einer statischen Ressource behandeln.
+ *
+ * Wir fügen hier jedoch ein einheitliches Präfix {@code /api} hinzu, damit die
+ * vom Front‑End erwarteten URLs (z. B. {@code /api/buecher}) mit den generierten
+ * Pfaden zusammenpassen.
  */
 @RestController
+@RequestMapping("/api")   // <-- adds the "/api" prefix to every BuchApi endpoint
 public class BuchController implements BuchApi {
 
     private final BuchDtoMapper mapper;
