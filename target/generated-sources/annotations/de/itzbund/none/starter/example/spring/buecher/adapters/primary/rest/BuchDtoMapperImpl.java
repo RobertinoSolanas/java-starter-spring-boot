@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-02-17T18:15:18+0100",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.45.0.v20260128-0750, environment: Java 21.0.9 (Eclipse Adoptium)"
+    date = "2026-02-17T19:45:14+0100",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.10 (Ubuntu)"
 )
 @Component
 public class BuchDtoMapperImpl implements BuchDtoMapper {

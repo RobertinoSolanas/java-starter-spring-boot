@@ -1,11 +1,13 @@
 package de.itzbund.none.starter.example.spring.bestellungen.adapters.secondary.database;
 
+import jakarta.annotation.Generated;
 import jakarta.persistence.metamodel.EntityType;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
 import java.math.BigDecimal;
 
 @StaticMetamodel(JpaBestellungEntity.class)
+@Generated("org.hibernate.processor.HibernateProcessor")
 public abstract class JpaBestellungEntity_ {
 
 	public static final String QUANTITY = "quantity";

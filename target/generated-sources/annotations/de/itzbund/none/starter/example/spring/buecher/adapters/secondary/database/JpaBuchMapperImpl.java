@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-02-17T18:15:18+0100",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.45.0.v20260128-0750, environment: Java 21.0.9 (Eclipse Adoptium)"
+    date = "2026-02-17T19:45:14+0100",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.10 (Ubuntu)"
 )
 @Component
 public class JpaBuchMapperImpl implements JpaBuchMapper {
@@ -22,11 +22,11 @@ public class JpaBuchMapperImpl implements JpaBuchMapper {
         JpaBuchEntity jpaBuchEntity = new JpaBuchEntity();
 
         jpaBuchEntity.setAusgeliehenVon( mapOptionalToLong( buch.getAusgeliehenVon() ) );
-        jpaBuchEntity.setAusgeliehen( buch.isAusgeliehen() );
-        jpaBuchEntity.setAutor( buch.getAutor() );
         jpaBuchEntity.setId( buch.getId() );
-        jpaBuchEntity.setIsbn( buch.getIsbn() );
         jpaBuchEntity.setTitel( buch.getTitel() );
+        jpaBuchEntity.setAutor( buch.getAutor() );
+        jpaBuchEntity.setIsbn( buch.getIsbn() );
+        jpaBuchEntity.setAusgeliehen( buch.isAusgeliehen() );
 
         return jpaBuchEntity;
     }
@@ -37,16 +37,16 @@ public class JpaBuchMapperImpl implements JpaBuchMapper {
             return null;
         }
 
-        boolean ausgeliehen = false;
+        String titel = null;
         String autor = null;
         String isbn = null;
-        String titel = null;
+        boolean ausgeliehen = false;
         Long id = null;
 
-        ausgeliehen = entity.isAusgeliehen();
+        titel = entity.getTitel();
         autor = entity.getAutor();
         isbn = entity.getIsbn();
-        titel = entity.getTitel();
+        ausgeliehen = entity.isAusgeliehen();
         id = entity.getId();
 
         Optional<Long> ausgeliehenVon = entity.isAusgeliehen() ? java.util.Optional.of(entity.getAusgeliehenVon()) : java.util.Optional.empty();
